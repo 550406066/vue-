@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    <style type="text/css">
+  ul,li{
+    margin: 0px;
+    padding: 0px;
+}
+li{
+    list-style: none
+}
+.page-bar li:first-child>a {
+   margin-left: 0px
+}
+.page-bar a{
+    border: 1px solid #ddd;
+    text-decoration: none;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    cursor: pointer
+}
+.page-bar a:hover{
+    background-color: #eee;
+}
+.page-bar .active a{
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.page-bar i{
+    font-style:normal;
+    color: #d44950;
+    margin: 0px 4px;
+    font-size: 12px;
+}
+    </style>
+     <div class="page-bar">
+    
+     	
+    
+            <ul>
+            <li v-for="item  in temp">{{item}} </li>
+              
+            <li v-if="showFirst"><a v-on:click="cur--">上一页</a></li>
+
+            <li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+
+                <a v-on:click="btnClick(index)">{{ index }}</a>
+                </li>
+                <li v-if="showLast"><a v-on:click="cur++">下一页</a></li>
+                <li><a>共<i>{{all}}</i>页</a></li>
+            </ul>
+        </div>
+   <script src="vue.js"></script>
+   <script>
+
+var pageBar = new Vue({
+	
+    el: '.page-bar',
+
+    data: {
+        all:'', //总页数
+        cur: 1,//当前页码
+        arr:[
+    '北京',
+    '上海',
+    '广州',
+    '深圳',
+    '杭州',
+    '长沙',
+    '合肥',
+    '宁夏',
+    '成都',
+    '西安',
+    '南昌',
+    '上饶',
+    '沈阳',
+    '济南',
+    '厦门',
+    '福州',
+    '九江',
+    '宜春',
+    '赣州',
+    '宁波',
+    '绍兴',
+    '无锡',
+    '苏州',
+    '徐州',
+    '东莞',
+    '佛山',
+    '中山',
+    '成都',
+    '武汉',
+    '青岛',
+    '天津',
+    '重庆',
+    '南京',
+    '九江',
+    '香港',
+    '澳门',
+    '台北'
+  ],
+  nums:5,
+     temp:[]
+     
+},
+ methods: {
+            btnClick: function(data){//页码点击事件
+                if(data != this.cur){
+                    this.cur = data 
+                      this.temp=this.arr[data-1]
+                }
+              
+              
+            }
+        },
+        watch: {
+    cur: function(oldValue , newValue){
+    
+            }
+},
+computed: {
+
+            indexs: function(index){
+              var left = 1
+              var right = this.all
+              var ar = [] 
+            
+            this.temp=this.arr.concat().splice(index.cur*this.nums-this.nums, this.nums);
+         
+              if(this.all>= 11){
+                if(this.cur > 5 && this.cur < this.all-4){
+                        left = this.cur - 5
+                        right = this.cur + 4
+                }else{
+                    if(this.cur<=5){
+                        left = 1
+                        right = 10
+                    }else{
+                        right = this.all
+                        left = this.all -9
+                    }
+                }
+             }
+            while (left <= right){
+                ar.push(left)
+                left ++
+            }   
+            return ar
+           },
+           showLast: function(){
+                if(this.cur == this.all){
+                    return false
+                }
+                return true
+           },
+           showFirst: function(){
+                if(this.cur == 1){
+                    return false
+                }
+               return true
+           }}}
+
+           );
+
+console.log(pageBar.$data.all=Math.ceil(pageBar.$data.arr.length/pageBar.$data.nums))
+   </script>
+    </body>
+</html>
